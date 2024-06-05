@@ -1,0 +1,64 @@
+import random
+import string
+
+def generate_password(length=12):
+    """
+    Generate a random password with a given length.
+    
+    Args:
+        length (int): Length of the password.
+        
+    Returns:
+        str: Generated password.
+    """
+    if length < 4:
+        raise ValueError("Password length should be at least 4 characters to ensure complexity.")
+    
+    # Define character sets
+    uppercase_letters = string.ascii_uppercase
+    lowercase_letters = string.ascii_lowercase
+    digits = string.digits
+    special_characters = string.punctuation
+    
+    # Ensure the password has at least one character from each set
+    password = [
+        random.choice(uppercase_letters),
+        random.choice(lowercase_letters),
+        random.choice(digits),
+        random.choice(special_characters)
+    ]
+    
+    # Fill the rest of the password length with a mix of all character sets
+    all_characters = uppercase_letters + lowercase_letters + digits + special_characters
+    password += random.choices(all_characters, k=length-4)
+    
+    # Shuffle to ensure random distribution of character types
+    random.shuffle(password)
+    
+    return ''.join(password)
+
+def generate_multiple_passwords(number_of_passwords=1, length=12):
+    """
+    Generate multiple random passwords.
+    
+    Args:
+        number_of_passwords (int): Number of passwords to generate.
+        length (int): Length of each password.
+        
+    Returns:
+        list: List of generated passwords.
+    """
+    passwords = [generate_password(length) for _ in range(number_of_passwords)]
+    return passwords
+
+if __name__ == "__main__":
+    # User input for password length and number of passwords
+    length = int(input("Enter the desired password length: "))
+    number_of_passwords = int(input("Enter the number of passwords to generate: "))
+    
+    # Generate passwords
+    passwords = generate_multiple_passwords(number_of_passwords, length)
+    
+    # Display the generated passwords
+    for i, password in enumerate(passwords, 1):
+        print(f"Password {i}: {password}")
